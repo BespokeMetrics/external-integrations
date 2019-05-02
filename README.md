@@ -4,9 +4,14 @@
 
 # Python Consumer
 
- ## Getting Started 
- 
+ ## Getting Started
 `Docker` is required for running the local `RabbitMQ` server and the connector app. `Docker` can be either run natively like OSX native `Docker` desktop or via using the `Docker-Machine`. 
+
+RabbitMQ WebApp credentials:
+```
+username: bespoke
+password: guest
+```
 
 ## Dev Setup
 
