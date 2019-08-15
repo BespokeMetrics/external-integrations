@@ -7,12 +7,6 @@
  ## Getting Started
 `Docker` is required for running the local `RabbitMQ` server and the connector app. `Docker` can be either run natively like OSX native `Docker` desktop or via using the `Docker-Machine`. 
 
-RabbitMQ WebApp credentials:
-```
-username: bespoke
-password: guest
-```
-
 ## Dev Setup
 
 Run `source setup_consumers.sh` for running the RabbitMQ server and the python consumer.
@@ -80,8 +74,10 @@ Submission data refers to business, finance and health safety data. Following is
     "tax_number": 123456789,
     "files": ["finance_file.txt", "finance_file2.pdf"],
     "status": "in_review",
+    "access_granted": "true",
     "sub_name": "Subcontractor",
-    "event": "submission.finance"
+    "event": "submission.finance",
+    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
 }
 ```
 
@@ -93,10 +89,14 @@ Submission data refers to business, finance and health safety data. Following is
     "single_contract_limit": 1234515698.0,
     "aggregate_contract_limit": 12315867912.0,
     "expiry": 156729456,
+    "date_assigned": 156729456,
+    "assigned_by": "gc@email.com",
     "tax_number": 12315627128,
     "sub_name": "Subcontractor",
-    "event": "prequalification.post"
+    "event": "prequalification.post",
+    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
 }
+
 ```
 
 Here expiry timestamp is the unix timestamp in seconds.
@@ -108,7 +108,8 @@ This event is published when Q score is updated:
     "q_score": 1.3,
     "prequalification": {},
     "sub_name": "subcontractor",
-    "event": "score.update"
+    "event": "score.update",
+    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
 }
 ```
 Here the prequalification refers to the prequalification data containing 
@@ -126,6 +127,20 @@ Example Payload:
 	"phone": "4444444444",
 	"locale": "en",
 	"additional_users": [],
+	"primary_user": {
+		"first_name": "David",
+		"last_name": "Beckham",
+		"email": "david@football.com",
+		"phone": "4444444444",
+		"title": "Midfielder"
+	},
+	"created_by": {
+		"first_name": "Bruce",
+		"last_name": "Wayne",
+		"email": "wayne@email.com",
+		"phone": "2223339999",
+		"title": "CEO"
+	},
 	"office_locations": [{
 		"city": "Toronto",
 		"postal_zip": "M5S4A1",
@@ -146,29 +161,63 @@ Example Payload:
 	"self_registered": true,
 	"office": {},
 	"tax_number": "123214516416",
-    "event": "registration.new_user"
+	"event": "registration.new_user"
 }
 ```
 Here `type: sub` refers to subcontractor type of the new registrant.
 
-# Company Specific Data
+# Company Specific Data Updates
 This data is delivered when a new sub updates or creates new company specific information.
-Example:
-```
-{
-	"name": "Beckingham",
-	"tax_number": "123214516416",
+There are two types of `company.update` that is provided. First is when the company changes information such as trades/ address etc. The second one is when a company changes data authorization. The second update is only visible if the company has authorized the GC to receive this notification.
+
+Example 1: Company Information
+```{
+	"name": "Wayne Enterprise",
+	"tax_number": "445566872",
 	"office_locations": [{
 		"city": "Toronto",
-		"address": "55 York ",
+		"address": "55 York St",
 		"country": "CA",
 		"primary": true,
 		"postal_zip": "M5S4A1",
 		"province_state": "ON"
 	}],
-	"email": "david@football.com",
-	"phone": "4444444444",
-    "event": "company.update"
+	"email": "wayne@email.com",
+	"phone": "2223334444",
+	"trades": {
+		"primary": " 01 00 00 - General Requirements",
+		"additional": [" 00 00 00 - Procurement and Contracting Requirements", " 03 00 00 - Concrete", " 04 00 00 - Masonry", " 06 00 00 - Wood, Plastics, and Composites", " 13 00 00 - Special Construction"]
+	},
+	"event": "company.update",
+	"updated_at": "2019-08-15T18:56:19+00:00" ## UTC TIME
+}
+```
+
+Example 2: Company Authorization
+```
+{
+	"name": "Wayne Enterprise",
+	"tax_number": "445566872",
+	"office_locations": [{
+		"city": "Toronto",
+		"address": "55 York St",
+		"country": "CA",
+		"primary": true,
+		"postal_zip": "M9A4Y1",
+		"province_state": "ON"
+	}],
+	"email": "wayne@email.com",
+	"phone": "2223334444",
+	"event": "company.update",
+	"updated_at": "2019-08-15T19:02:15+00:00",
+	"authorization_updates": {
+		"health_data_updated": "2019-08-15T19:02:14+00:00", #UTC TIME
+		"finance_data_updated": "2019-08-15T19:02:14+00:00", #UTC TIME
+		"business_data_updated": "2019-08-15T17:10:20+00:00", #UTC TIME
+		"health_data_authorized": false,
+		"finance_data_authorized": false,
+		"business_data_authorized": true
+	}
 }
 ```
 
