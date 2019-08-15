@@ -77,7 +77,7 @@ Submission data refers to business, finance and health safety data. Following is
     "access_granted": "true",
     "sub_name": "Subcontractor",
     "event": "submission.finance",
-    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
+    "created_at": 156729456 ## UTC TIME
 }
 ```
 
@@ -94,7 +94,7 @@ Submission data refers to business, finance and health safety data. Following is
     "tax_number": 12315627128,
     "sub_name": "Subcontractor",
     "event": "prequalification.post",
-    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
+    "created_at": 156729456 ## UTC TIME
 }
 
 ```
@@ -109,7 +109,7 @@ This event is published when Q score is updated:
     "prequalification": {},
     "sub_name": "subcontractor",
     "event": "score.update",
-    "created_at": 2019-06-11T17:01:51+00:00 ## UTC TIME
+    "created_at": 156729456 ## UTC TIME
 }
 ```
 Here the prequalification refers to the prequalification data containing 
@@ -189,7 +189,7 @@ Example 1: Company Information
 		"additional": [" 00 00 00 - Procurement and Contracting Requirements", " 03 00 00 - Concrete", " 04 00 00 - Masonry", " 06 00 00 - Wood, Plastics, and Composites", " 13 00 00 - Special Construction"]
 	},
 	"event": "company.update",
-	"updated_at": "2019-08-15T18:56:19+00:00" ## UTC TIME
+	"updated_at": 1565900004 ## UTC TIME
 }
 ```
 
@@ -211,9 +211,9 @@ Example 2: Company Authorization
 	"event": "company.update",
 	"updated_at": "2019-08-15T19:02:15+00:00",
 	"authorization_updates": {
-		"health_data_updated": "2019-08-15T19:02:14+00:00", #UTC TIME
-		"finance_data_updated": "2019-08-15T19:02:14+00:00", #UTC TIME
-		"business_data_updated": "2019-08-15T17:10:20+00:00", #UTC TIME
+		"health_data_updated": 1565900004, #UTC TIME
+		"finance_data_updated": 1565900004, #UTC TIME
+		"business_data_updated": 1565900004, #UTC TIME
 		"health_data_authorized": false,
 		"finance_data_authorized": false,
 		"business_data_authorized": true
